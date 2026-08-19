@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: multimodal-ai-medical-chatbot
+  description: Multimodal AI medical chatbot with text, image, and voice capabilities
+  annotations:
+    github.com/project-slug: SahilOtavanekar/Multimodal-AI-Medical-Chatbot
+spec:
+  type: service
+  lifecycle: experimental
+  owner: user/sahilotavanekar
