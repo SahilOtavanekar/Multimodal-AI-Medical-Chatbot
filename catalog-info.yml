@@ -1,11 +1,196 @@
 apiVersion: backstage.io/v1alpha1
-kind: Component
+kind: System
+
 metadata:
   name: multimodal-ai-medical-chatbot
-  description: Multimodal AI medical chatbot with text, image, and voice capabilities
+  description: >
+    Multimodal AI medical awareness and symptom interpretation platform
+    supporting text, image, and voice interactions.
+
+spec:
+  owner: user:default/sahilotavanekar
+
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+
+metadata:
+  name: multimodal-ai-medical-chatbot-frontend
+
+  description: >
+    Next.js frontend for the Multimodal AI Medical Chatbot,
+    providing the user interface, authentication, chat sessions,
+    image upload, and voice interaction.
+
+  tags:
+    - nextjs
+    - typescript
+    - react
+    - tailwindcss
+    - frontend
+    - supabase
+
   annotations:
     github.com/project-slug: SahilOtavanekar/Multimodal-AI-Medical-Chatbot
+
+  links:
+    - url: https://github.com/SahilOtavanekar/Multimodal-AI-Medical-Chatbot
+      title: GitHub Repository
+
+    - url: https://frontend-alpha-puce-20.vercel.app
+      title: Live Frontend
+
+spec:
+  type: website
+  lifecycle: experimental
+  owner: user:default/sahilotavanekar
+
+  system: multimodal-ai-medical-chatbot
+
+  dependsOn:
+    - component:default/multimodal-ai-medical-chatbot-backend
+    - resource:default/multimodal-ai-supabase
+
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+
+metadata:
+  name: multimodal-ai-medical-chatbot-backend
+
+  description: >
+    FastAPI backend responsible for multimodal AI processing,
+    medical safety guardrails, image handling, and communication
+    with external AI and Supabase services.
+
+  tags:
+    - python
+    - fastapi
+    - backend
+    - openai
+    - supabase
+    - ai
+    - multimodal
+    - medical-ai
+    - rate-limiting
+
+  annotations:
+    github.com/project-slug: SahilOtavanekar/Multimodal-AI-Medical-Chatbot
+
+  links:
+    - url: https://github.com/SahilOtavanekar/Multimodal-AI-Medical-Chatbot
+      title: GitHub Repository
+
+    - url: https://medical-ai-chatbot-api.onrender.com
+      title: Backend API
+
 spec:
   type: service
   lifecycle: experimental
-  owner: user/sahilotavanekar
+  owner: user:default/sahilotavanekar
+
+  system: multimodal-ai-medical-chatbot
+
+  providesApis:
+    - multimodal-medical-chatbot-api
+
+  dependsOn:
+    - resource:default/multimodal-ai-supabase
+    - resource:default/multimodal-ai-storage
+    - api:default/openai-api
+
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+
+metadata:
+  name: multimodal-medical-chatbot-api
+
+  description: >
+    API exposed by the FastAPI backend for multimodal medical
+    awareness and symptom interpretation.
+
+spec:
+  type: openapi
+  lifecycle: experimental
+  owner: user:default/sahilotavanekar
+
+  system: multimodal-ai-medical-chatbot
+
+  definition:
+    $text: ./openapi.yaml
+
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+
+metadata:
+  name: multimodal-ai-supabase
+
+  description: >
+    Supabase platform used for authentication, database,
+    persistent chat history, and application data.
+
+  tags:
+    - supabase
+    - authentication
+    - database
+
+spec:
+  type: database
+  lifecycle: experimental
+  owner: user:default/sahilotavanekar
+
+  system: multimodal-ai-medical-chatbot
+
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+
+metadata:
+  name: multimodal-ai-storage
+
+  description: >
+    Supabase Storage used for secure handling of uploaded
+    medical images.
+
+  tags:
+    - supabase
+    - storage
+    - medical-images
+
+spec:
+  type: storage
+  lifecycle: experimental
+  owner: user:default/sahilotavanekar
+
+  system: multimodal-ai-medical-chatbot
+
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+
+metadata:
+  name: openai-api
+
+  description: >
+    External AI service used by the backend for multimodal
+    medical awareness and symptom interpretation.
+
+spec:
+  type: openapi
+  lifecycle: production
+  owner: user:default/sahilotavanekar
+
+  definition: |
+    openapi: 3.0.3
+    info:
+      title: OpenAI API
+      version: 1.0.0
+    paths: {}
