@@ -1,0 +1,50 @@
+openapi: 3.0.3
+
+info:
+  title: Multimodal AI Medical Chatbot API
+
+  description: >
+    Backend API for the Multimodal AI Medical Awareness Assistant.
+    The service supports AI-powered health awareness, multimodal
+    interactions, image analysis, contextual conversations,
+    emergency detection, and integration with Supabase.
+
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+tags:
+  - name: Health
+    description: Backend health and status
+
+
+paths:
+
+  /:
+    get:
+      tags:
+        - Health
+
+      summary: API health check
+
+      description: >
+        Returns the basic status of the backend service.
+
+      operationId: healthCheck
+
+      responses:
+
+        "200":
+          description: Backend is running
+
+          content:
+            application/json:
+              schema:
+                type: object
+
+                properties:
+                  status:
+                    type: string
+                    example: healthy
